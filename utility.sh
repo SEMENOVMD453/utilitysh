@@ -1,16 +1,16 @@
 #!/bin/bash
 
-#функция для вывода списка пользователей и их директорий
+#вывод списка пользователей и их директорий
 list_users() {
   awk -F: '$3 >= 1000 {print $1 "\t" $6}' /etc/passwd | sort
 }
 
-#функция для вывода списка процессов в скрипте и время
+#вывод списка процессов в скрипте и время
 list_processes() {
   ps -eo pid,cmd,start --sort=pid
 }
 
-#вывода мануала
+#вывод help
 show_help() {
   cat <<EOF
 
@@ -33,7 +33,7 @@ EOF
     exit 0
 }
 
-#чекалка пути для вывода
+#пути для вывода
 validate_path() {
   local path="$1"
   if [[ ! -d "$(dirname "$path")" ]]; then
@@ -49,7 +49,6 @@ main() {
   local error_path=""
   local action=""
 
-  #парсинг аргументов с помощью getopt
   TEMP=$(getopt -o upl:e:h --long users,processes,log:,errors:,help -n "$0" -- "$@")
   if [[ $? -ne 0 ]]; then
     echo "Ошибка: неверные параметры." >&2
